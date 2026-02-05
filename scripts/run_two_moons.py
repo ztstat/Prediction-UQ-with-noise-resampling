@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 from src.data import generate_two_moons
 from src.train import train_one_model
 from src.utils import open_logger
@@ -7,14 +8,8 @@ from src.predict import compute_predictive_uncertainty
 from src.viz import plot_heatmaps_and_kde, plot_uncertainty_curve
 from src.config import ExperimentConfig
 
-
-
 torch.set_num_threads(8)
 torch.set_num_interop_threads(8)
-
-
-
-
 
 def main():
     cfg = ExperimentConfig()
@@ -87,6 +82,8 @@ def main():
 
     logger.file.close()
 
+np.random.seed(0)
+torch.manual_seed(0)
 
 if __name__ == "__main__":
     main()
