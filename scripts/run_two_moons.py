@@ -5,7 +5,7 @@ import torch.nn.functional as F
 
 from src.mmd import mmd_loss
 from src.flows import PlanarFlowModel
-
+from src.data import generate_two_moons
 
 
 
@@ -72,13 +72,11 @@ for k,v in [
 log("=========================================")
 
 # --- Double Moon ---
-def generate_two_moons(n_samples=100, noise=0.05):
-    X, _ = make_moons(n_samples=n_samples, noise=noise)
-    return X
 
 
-X_real_np = generate_two_moons(n_samples=sample_size_m, noise=noise_level)
-X_real    = torch.tensor(X_real_np, dtype=torch.float32)
+
+X_real = generate_two_moons(n_samples=sample_size_m, noise=noise_level)
+
 log(f"Fixed real data shape: {X_real.shape}")
 
 
