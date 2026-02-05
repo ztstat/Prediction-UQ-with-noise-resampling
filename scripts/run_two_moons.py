@@ -12,6 +12,8 @@ from src.flows import PlanarFlowModel
 from src.data import generate_two_moons
 from src.train import train_one_model
 from src.utils import open_logger
+from src.predict import build_predictive_points
+
 
 torch.set_num_threads(8)
 torch.set_num_interop_threads(8)
@@ -105,21 +107,14 @@ for exp in range(1, num_experiments + 1):
     logger.log(f"[Two-sample exp {exp}] min MMD = {min_l:.6f}")
 
 # --- 4. Assignm noise ---
-sorted_idxs  = np.argsort(experiment_losses)
-pts_data = {}
-
-for p in percentiles:
-    k = max(1, int(np.ceil(p * num_experiments)))
-    idxs = sorted_idxs[:k]
-    logger.log(f"[Truncation Top {int(p*100)}%] Retained models: {k}, Per-model test points: {per_model_test_size}, Total: {per_model_test_size * k}")
-
-    pts_list = []
-    for i in idxs:
-        U_test_i = torch.randn(per_model_test_size, 2)
-        with torch.no_grad():
-            out_i = experiment_models[i](U_test_i).cpu().numpy()
-        pts_list.append(out_i)
-    pts_data[p] = np.vstack(pts_list)
+sorted_idxs, pts_data = build_predictive_points(
+    experiment_models=experiment_models,
+    experiment_losses=experiment_losses,
+    percentiles=percentiles,
+    num_experiments=num_experiments,
+    per_model_test_size=per_model_test_size,
+    logger=logger,
+)
 
 # --- 5. Draw Heatmaps ---
 x0, x1 = heatmap_range[0]
@@ -530,5 +525,5 @@ plt.savefig("results/percentile_vs_uncertainty_and_selection.png")
 plt.close()
 logger.log("Saved percentile_vs_uncertainty_and_selection.png")
 
-log_file.close()
+logger.log_file.close()
 
