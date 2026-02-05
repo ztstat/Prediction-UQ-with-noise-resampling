@@ -46,3 +46,39 @@ def build_predictive_points(
         pts_data[p] = np.vstack(pts_list)
 
     return sorted_idxs, pts_data
+
+def compute_predictive_uncertainty(
+    experiment_models: List,
+    sorted_idxs: np.ndarray,
+    percentiles: List[float],
+    num_experiments: int,
+    per_model_test_size: int,
+) -> Tuple[List[float], List[int]]:
+    """
+    Prediction-focused uncertainty:
+    quantify variability across retained models in predictive space.
+    Current implementation matches the original script:
+      for each retained model, draw per_model_test_size samples
+      compute model-wise predictive mean
+      use dispersion of these means as uncertainty
+    """
+    uncertainties: List[float] = []
+    selection_counts: List[int] = []
+
+    for p in percentiles:
+        k = max(1, int(np.ceil(p * num_experiments)))
+        idxs = sorted_idxs[:k]
+        selection_counts.append(k)
+
+        means = []
+        for i in idxs:
+            u_test = torch.randn(per_model_test_size, 2)
+            with torch.no_grad():
+                out = experiment_models[i](u_test)
+                means.append(out.mean(0))
+        means = torch.stack(means, dim=0)
+        diffs = means - means.mean(0, keepdim=True)
+        var = (diffs.norm(dim=1) ** 2).mean().item()
+        uncertainties.append(var)
+
+    return uncertainties, selection_counts

@@ -13,6 +13,7 @@ from src.data import generate_two_moons
 from src.train import train_one_model
 from src.utils import open_logger
 from src.predict import build_predictive_points
+from src.predict import compute_predictive_uncertainty
 
 
 torch.set_num_threads(8)
@@ -224,25 +225,13 @@ for bins in resolutions:
         plt.savefig(f"{subdir}/heatmap_diff_top{pct}pct_{bins}bins_enhanced.png")
         plt.close()
 
-# --- 6. Uncertainty Quantification ---
-uncertainties    = []
-selection_counts = []
-
-for p in percentiles:
-    k    = max(1, int(np.ceil(p * num_experiments)))
-    idxs = sorted_idxs[:k]
-    selection_counts.append(k)
-
-    means = []
-    for i in idxs:
-        U_test_i = torch.randn(per_model_test_size, 2)
-        with torch.no_grad():
-            out_i = experiment_models[i](U_test_i)
-            means.append(out_i.mean(0))
-    means = torch.stack(means, dim=0)
-    diffs = means - means.mean(0, keepdim=True)
-    var   = (diffs.norm(dim=1)**2).mean().item()
-    uncertainties.append(var)
+uncertainties, selection_counts = compute_predictive_uncertainty(
+    experiment_models=experiment_models,
+    sorted_idxs=sorted_idxs,
+    percentiles=percentiles,
+    num_experiments=num_experiments,
+    per_model_test_size=per_model_test_size,
+)
 
 fig, ax1 = plt.subplots(figsize=(8,5))
 ax1.plot([p*100 for p in percentiles], uncertainties, marker='o', label='Avg Uncertainty')
