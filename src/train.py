@@ -40,11 +40,14 @@ def train_one_model(
         loss.backward()
         opt.step()
 
-        if it >= min_iters and prev is not None and abs(lval - prev) < tolerance:
-            pat += 1
-            if pat >= patience:
-                logger.log(f"[Two-sample exp {exp_id}] early stop at iter {it}")
-                break
+        if it >= min_iters and prev is not None:
+            if abs(lval - prev) < tolerance:
+                pat += 1
+                if pat >= patience:
+                    logger.log(f"[Two-sample exp {exp_id}] early stop at iter {it}")
+                    break
+            else:
+                pat = 0
         prev = lval
 
     logger.log(f"[Two-sample exp {exp_id}] min MMD = {min_l:.6f}")
