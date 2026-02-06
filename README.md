@@ -44,6 +44,12 @@ This aligns with **modern statistics and machine learning practice** where
 
 ---
 
+## Example Results
+
+The following figures are generated using the default configuration on a laptop-scale run.
+Full experimental results are omitted for reproducibility and storage reasons.
+
+
 ## How to Run
 
 ```bash
