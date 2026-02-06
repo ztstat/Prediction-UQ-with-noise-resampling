@@ -3,7 +3,7 @@ This script wires together:
 1. data generation
 2. ensemble training
 3. truncation-based predictive sampling
-4. prediction-stage uncertainty estimation
+4. prediction-stage uncertainty quantification
 5. visualization
 """
 
