@@ -1,3 +1,12 @@
+"""
+This script wires together:
+1. data generation
+2. ensemble training
+3. truncation-based predictive sampling
+4. prediction-stage uncertainty estimation
+5. visualization
+"""
+
 import torch
 
 import numpy as np
@@ -14,6 +23,13 @@ torch.set_num_threads(8)
 torch.set_num_interop_threads(8)
 
 def main():
+    """
+    Run the full two-moons experiment using the configured pipeline.
+    """
+
+    np.random.seed(0)
+    torch.manual_seed(0)
+
     cfg = default_config()
 
     logger = open_logger(cfg.results_dir)
@@ -83,9 +99,6 @@ def main():
     )
 
     logger.file.close()
-
-np.random.seed(0)
-torch.manual_seed(0)
 
 if __name__ == "__main__":
     main()
