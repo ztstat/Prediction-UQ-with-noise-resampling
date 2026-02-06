@@ -1,3 +1,5 @@
+# src/data.py
+
 """
 Synthetic data generation utilities for controlled experiments.
 
@@ -5,7 +7,7 @@ This module provides simple, low-dimensional datasets used to
 study prediction uncertainty in a controlled setting.
 """
 
-# src/data.py
+
 import torch
 from sklearn.datasets import make_moons
 

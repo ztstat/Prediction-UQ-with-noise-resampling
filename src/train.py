@@ -45,9 +45,6 @@ def train_one_model(
     prev, pat, min_l = None, 0, float("inf")
     u_small = torch.randn(sample_size_n, 2)
 
-    # prev : loss value at previous iteration
-    # pat  : counter for consecutive small-improvement steps
-    # min_l: best (minimum) loss observed during training
     for it in range(max_iters + 1):
         opt.zero_grad()
 

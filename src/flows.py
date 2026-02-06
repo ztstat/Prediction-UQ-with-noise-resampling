@@ -1,3 +1,5 @@
+# src/flows.py
+
 """
 Simple planar flow components used as flexible generators.
 

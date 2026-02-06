@@ -1,4 +1,9 @@
 # src/utils.py
+
+"""
+Lightweight utilities for experiment logging and file management.
+"""
+
 from dataclasses import dataclass
 from typing import TextIO
 import os
