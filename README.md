@@ -8,8 +8,17 @@ based on **truncated ensembles of generative models**.
 
 ## Key Idea
 
-> **Uncertainty is defined as instability of predictions under model selection,
-> rather than uncertainty of model parameters.**
+> **We construct prediction samples by resampling latent noise to analyze the
+> plug-in predictive distribution induced by the flow model.**
+>
+> We study *prediction uncertainty* directly in the predictive (output) space,
+> rather than parameter inference. After fitting a generative flow, fresh latent
+> noise is resampled and propagated through the learned mapping to produce
+> predictive outputs, forming a bootstrap-like pseudo predictive distribution.
+>
+> This truncation-based resampling scheme allows us to quantify uncertainty of
+> future observations and supports downstream tasks such as predictive density
+> visualization and prediction interval construction.
 
 The pipeline:
 1. Train multiple generative models on the same data
