@@ -1,8 +1,20 @@
+"""
+Simple planar flow components used as flexible generators.
+
+Planar flows are employed here as lightweight nonlinear transformations
+to generate diverse predictive models, rather than as fully normalized
+density estimators.
+"""
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 class PlanarFlow(nn.Module):
+    """
+    This module implements a basic planar flow of the form:
+        z -> z + u * tanh(w^T z + b)
+    """
     def __init__(self, dim):
         super().__init__()
         self.u = nn.Parameter(torch.randn(dim))
@@ -17,6 +29,9 @@ class PlanarFlow(nn.Module):
         return z + u_hat * torch.tanh(lin)
 
 class PlanarFlowModel(nn.Module):
+    """
+    Composition of multiple planar flow transformations.
+    """
     def __init__(self, dim, num_flows):
         super().__init__()
         self.flows = nn.ModuleList([PlanarFlow(dim) for _ in range(num_flows)])
