@@ -1,4 +1,13 @@
 # src/viz.py
+
+"""
+Visualization utilities for prediction-focused uncertainty analysis.
+
+This module visualizes the predictive distribution induced by truncated
+ensembles (via heatmaps / KDE), and summarizes prediction uncertainty as a
+function of truncation level.
+"""
+
 from __future__ import annotations
 
 import os
@@ -21,8 +30,13 @@ def plot_heatmaps_and_kde(
     results_dir: str,
 ) -> None:
     """
-    Plot histogram heatmaps, enhanced log heatmaps, KDE heatmaps, and incremental diff heatmaps.
-    Logic matches the original script; only moved into a module.
+    For each percentile p (top-k% retained models), this function visualizes the
+    aggregated predictive samples in multiple complementary ways:
+    - 2D histogram density heatmap (linear scale)
+    - 2D histogram density heatmap (log scale) to highlight tails
+    - KDE heatmap (log scale) for smoother density visualization
+    - Incremental "diff" heatmaps showing which regions are newly covered when
+      expanding from smaller truncation to larger truncation
     """
     x0, x1 = heatmap_range[0]
     y0, y1 = heatmap_range[1]
@@ -153,6 +167,11 @@ def plot_uncertainty_curve(
 ) -> None:
     """
     Plot percentile vs uncertainty and selection count.
+
+    - x-axis: truncation level (top-k% retained models)
+    - left y-axis: predictive uncertainty metric computed in src/predict.py
+    - right y-axis: number of retained models
+
     """
     os.makedirs(results_dir, exist_ok=True)
 
