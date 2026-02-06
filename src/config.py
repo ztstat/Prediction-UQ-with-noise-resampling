@@ -16,7 +16,7 @@ class ExperimentConfig:
     sample_size_n: int = 100
     noise_level: float = 0.01
 
-    num_experiments: int = 20
+    num_experiments: int = 50
 
     num_flows: int = 2
     lr: float = 1e-3
@@ -31,7 +31,7 @@ class ExperimentConfig:
 
     def __post_init__(self):
         object.__setattr__(self, "heatmap_range", self.heatmap_range or [[-2, 2], [-2, 2]])
-        object.__setattr__(self, "percentiles", self.percentiles or [0.1, 0.2])
+        object.__setattr__(self, "percentiles", self.percentiles or [0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50])
         object.__setattr__(self, "resolutions", self.resolutions or [100])
 
     def to_dict(self):
