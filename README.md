@@ -3,6 +3,13 @@
 This repository presents a **prediction-focused uncertainty quantification framework**
 based on **truncated ensembles of generative models**.
 
+## Overview
+
+![Predictive uncertainty summary](examples/figures/summary.png)
+
+*Representative predictive uncertainty patterns produced by the proposed
+truncation-based noise resampling scheme.
+
 
 ---
 
