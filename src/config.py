@@ -1,3 +1,12 @@
+"""
+Centralized experiment configuration.
+
+This config separates:
+- a lightweight default setup for local reproducibility
+- a reference large-scale setup for server-side experiments
+
+"""
+
 # src/config.py
 from __future__ import annotations
 from dataclasses import dataclass, asdict
@@ -31,7 +40,10 @@ class ExperimentConfig:
 
     def __post_init__(self):
         object.__setattr__(self, "heatmap_range", self.heatmap_range or [[-2, 2], [-2, 2]])
+
+        # truncation grid for uncertainty curve
         object.__setattr__(self, "percentiles", self.percentiles or [0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50])
+
         object.__setattr__(self, "resolutions", self.resolutions or [100])
 
     def to_dict(self):
