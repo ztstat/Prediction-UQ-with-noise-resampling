@@ -1,9 +1,39 @@
-# Uncertainty Quantification of Prediction
+# Noise-Only Uncertainty Quantification for Prediction
 
-This repository presents a **prediction-focused uncertainty quantification framework**
-based on **truncated ensembles of generative models**.
+A prediction-focused uncertainty quantification framework
+based on truncated ensembles of generative models.
 
-## Overview
+This project studies calibrated predictive uncertainty via
+noise resampling and discrepancy-based model truncation.
+
+
+## Calibration (IID Setting)
+
+
+Empirical prediction coverage under an IID single-hidden-layer latent neural generator  
+(200 independent Monte Carlo repetitions).
+
+| Nominal | Noise-only | Conformal Prediction |
+|----------|------------|----------------------|
+| 0.990 | 0.989 ± 0.005 | 0.993 ± 0.006 |
+| 0.985 | 0.984 ± 0.006 | 0.992 ± 0.006 |
+| 0.970 | 0.969 ± 0.010 | 0.975 ± 0.011 |
+| 0.950 | 0.949 ± 0.014 | 0.960 ± 0.015 |
+| 0.900 | 0.900 ± 0.020 | 0.915 ± 0.021 |
+| 0.850 | 0.850 ± 0.024 | 0.869 ± 0.026 |
+| 0.800 | 0.800 ± 0.027 | 0.822 ± 0.030 |
+
+
+### Key Observations
+
+- Noise-only achieves near-exact nominal coverage across all confidence levels.
+- Conformal Prediction is slightly conservative (over-coverage).
+- Under IID and approximately well-specified settings, the noise-only construction delivers calibrated predictive uncertainty without likelihood-based inference.
+
+> This repository provides an implementation of the core noise-only uncertainty pipeline along with representative experimental results.  
+> Additional large-scale studies and extended comparisons are beyond the scope of this demo repository.
+
+## Predictive Uncertainty Visualization
 
 ![Predictive uncertainty summary](examples/figures/summary.png)
 
@@ -51,10 +81,7 @@ This aligns with **modern statistics and machine learning practice** where
 
 ---
 
-## Example Results
 
-The following figures are generated using the default configuration on a laptop-scale run.
-Full experimental results are omitted for reproducibility and storage reasons.
 
 
 ## How to Run
