@@ -27,7 +27,7 @@ Empirical prediction coverage under an IID single-hidden-layer latent neural gen
 ### Key Observations
 
 - Noise-only achieves near-exact nominal coverage across all confidence levels.
-- Conformal Prediction is slightly conservative (over-coverage).
+- Conformal Prediction exhibits slight over-coverage, consistent with its distribution-free guarantee.
 - Under IID and approximately well-specified settings, the noise-only construction delivers calibrated predictive uncertainty without likelihood-based inference.
 
 > This repository provides an implementation of the core noise-only uncertainty pipeline along with representative experimental results.  
